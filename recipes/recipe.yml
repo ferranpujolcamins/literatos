@@ -24,6 +24,16 @@ modules:
     install: []
     remove: []
 
+  # leftwm
+  - type: dnf
+    repos:
+      cleanup: true
+      copr:
+        - th3-s4lm0n/leftwm
+    install:
+      packages:
+        - leftwm
+
   - type: default-flatpaks
     notify: true # Send notification after install/uninstall is finished (true/false)
     system:
