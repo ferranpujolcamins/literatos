@@ -27,12 +27,14 @@ modules:
         - nemo
         - python3-gobject
         - python3-nemo
-        - luakit
+
+  - type: dnf
+    repos:
+      copr:
+        - 616b2f/luakit 
     install:
       packages:
-        - repo: 616b2f/luakit 
-          packages:
-            - luakit
+        - luakit
 
   - type: default-flatpaks
     configurations:
