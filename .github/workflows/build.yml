@@ -41,15 +41,43 @@ jobs:
           # enabled by default, disable if your image is small and you want faster builds
           maximize_build_space: true
 
-  isotovideo:
+  # isotovideo:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: kalikiana/isotovideo-action@main
+  #       with:
+  #         schedule: tests/foo/bar
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         name: Test results
+  #         path: .
+  #       if: always()
+
+  run_on_image:
+    name: Spin up built image and run tests
+    needs: bluebuild
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: kalikiana/isotovideo-action@main
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
         with:
-          schedule: tests/foo/bar
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Test results
-          path: .
-        if: always()
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull built image
+        run: |
+          IMAGE=ghcr.io/${{ github.repository_owner }}/literatos:latest
+          echo "Pulling $IMAGE"
+          docker pull "$IMAGE"
+
+      - name: Run command inside image
+        run: |
+          IMAGE=ghcr.io/${{ github.repository_owner }}/literatos:latest
+          echo "Running command inside $IMAGE"
+          # adjust the command below to whatever you want to run on the image
+          docker run --rm "$IMAGE" /bin/bash -lc "echo 'OS release:'; cat /etc/os-release || true; echo; echo 'uname:'; uname -a"
