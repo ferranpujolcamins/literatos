@@ -44,7 +44,7 @@ jobs:
   # isotovideo:
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v5
   #     - uses: kalikiana/isotovideo-action@main
   #       with:
   #         schedule: tests/foo/bar
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
